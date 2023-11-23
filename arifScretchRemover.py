@@ -72,4 +72,4 @@ def generate_scratch_mask():
     # return mask_image_dilated
 
 
-# generate_scratch_mask()
+generate_scratch_mask()
