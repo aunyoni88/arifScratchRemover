@@ -8,6 +8,7 @@ from diffusers import StableDiffusionInpaintPipeline, ControlNetModel, DEISMulti
 from diffusers.utils import load_image
 from PIL import Image
 import cv2
+import glob
 import time
 import os
 
@@ -25,19 +26,29 @@ def resize_image(image, target_size):
         new_height = target_size
     return image.resize((new_width, new_height), Image.BICUBIC)
 
+def remove_all_file_in_dir(folder):
+    #'/YOUR/PATH/*'
+    files = glob.glob(folder)
+    for f in files:
+        os.remove(f)
+
 
 def generate_scratch_mask():
     # Save the input image to a directory
-    img_p = "auny.png"
+    image_dir = 'Arif'
+    img_p = ("%s/auny.png"%image_dir)
     input_image = PIL.Image.open(img_p).convert('RGB')
 
-    input_image_path = ("input_images/%s" % img_p)
-    input_image_resized = resize_image(input_image, 768)
-    input_image_resized.save(input_image_path)
-
-    test_path = "input_images"
+    input_path = "input_images"
     output_dir = "output_masks"
-    scratch_detector = ScratchDetection(test_path, output_dir, input_size="scale_256", gpu=0)
+
+    remove_all_file_in_dir(folder=("%s/*"%input_path))
+    input_image_path = ("%s/%s" %input_path %img_p)
+    #input_image_resized = resize_image(input_image, 768)
+    input_image.save(input_image_path)
+
+
+    scratch_detector = ScratchDetection(input_path, output_dir, input_size="scale_256", gpu=0)
     scratch_detector.run()
     mask_image = scratch_detector.get_mask_image(img_p)
 
@@ -60,4 +71,4 @@ def generate_scratch_mask():
     # return mask_image_dilated
 
 
-generate_scratch_mask()
+# generate_scratch_mask()
