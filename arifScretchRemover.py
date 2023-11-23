@@ -36,7 +36,8 @@ def remove_all_file_in_dir(folder):
 def generate_scratch_mask():
     # Save the input image to a directory
     image_dir = 'Arif'
-    img_p = ("%s/auny.png"%image_dir)
+    image_name = 'auny.png'
+    img_p = ("%s/%s"%image_dir %image_name)
     input_image = PIL.Image.open(img_p).convert('RGB')
 
     input_path = "input_images"
