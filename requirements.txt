@@ -8,3 +8,4 @@ ftfy
 accelerate
 controlnet_aux
 opencv-contrib-python
+easydict
