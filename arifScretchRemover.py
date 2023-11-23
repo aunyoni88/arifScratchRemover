@@ -35,23 +35,29 @@ def remove_all_file_in_dir(folder):
 
 def generate_scratch_mask():
     # Save the input image to a directory
+    pngExt = '.png'
+    jpgExt = '.jpg'
+    fileName = 'auny'
     image_dir = 'Arif'
-    image_name = 'auny.png'
-    img_p = ("%s/%s"%image_dir %image_name)
+    image_name = fileName+pngExt
+
+
+    image_full_dir = (f'{image_dir}/{image_name}')
+    img_p = (image_full_dir)
     input_image = PIL.Image.open(img_p).convert('RGB')
 
     input_path = "input_images"
     output_dir = "output_masks"
 
     remove_all_file_in_dir(folder=("%s/*"%input_path))
-    input_image_path = ("%s/%s" %input_path %img_p)
+    input_image_path = (f'{input_path}/{image_name}')
     #input_image_resized = resize_image(input_image, 768)
     input_image.save(input_image_path)
 
 
     scratch_detector = ScratchDetection(input_path, output_dir, input_size="scale_256", gpu=0)
     scratch_detector.run()
-    mask_image = scratch_detector.get_mask_image(img_p)
+    mask_image = scratch_detector.get_mask_image((fileName+pngExt))
 
     # Resize the mask to match the input image size
     mask_image = mask_image.resize(input_image.size, Image.BICUBIC)
